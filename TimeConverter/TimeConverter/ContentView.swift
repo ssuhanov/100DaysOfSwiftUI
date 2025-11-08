@@ -55,7 +55,9 @@ struct ContentView: View {
   }
 
   var body: some View {
-    NavigationStack {
+    Self._printChanges()
+    Self._logChanges()
+    return NavigationStack {
       Form {
         TextField(
           "Input",
