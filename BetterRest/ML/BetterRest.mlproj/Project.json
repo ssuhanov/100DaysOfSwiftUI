@@ -1,0 +1,29 @@
+{
+  "activityEntities" : [
+    "projectCreated",
+    [
+      {
+        "createdDate" : "2025-11-15T17:52:28Z",
+        "event" : "projectCreated",
+        "id" : "EA7A3344-B6E4-419D-9EBF-88CA4084AF6E",
+        "subtitle" : "BetterRest",
+        "title" : "Project Created"
+      }
+    ]
+  ],
+  "authorName" : "Sergii Sukhanov",
+  "createdDate" : "2025-11-15T17:52:28Z",
+  "description" : "",
+  "id" : "514968A1-4237-47F0-A848-F47864EE502D",
+  "license" : "",
+  "location" : "",
+  "modifiedDate" : "2025-11-15T17:52:28Z",
+  "projectName" : "BetterRest",
+  "settingsEntity" : {
+    "snapshotOnExtendTraining" : true,
+    "snapshotOnResumeTraining" : false
+  },
+  "taskType" : "generalRegresor",
+  "title" : "Tabular Regression",
+  "version" : "1.1"
+}
