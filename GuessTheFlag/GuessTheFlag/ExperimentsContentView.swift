@@ -51,21 +51,39 @@ struct ExperimentsContentView: View {
           print("Another edit button has been tapped")
         }
 
-        Button {
-          showingAlert = true
-        } label: {
-          Label("Show Alert", systemImage: "pencil")
-            .padding()
-            .foregroundStyle(.white)
+        if #available(iOS 26.0, *) {
+          Button {
+            showingAlert = true
+          } label: {
+            Label("Show Alert", systemImage: "pencil")
+              .padding()
+              .foregroundStyle(.white)
             // .background(.orange.gradient)
             // .clipShape(.rect(cornerRadius: 8))
-        }
-        .glassEffect(.clear)
-        .alert("Important message", isPresented: $showingAlert) {
-          Button("OK", role: .cancel) { print("Alert OK") }
-          Button("Not OK", role: .destructive) { print("Alert is not OK") }
-        } message: {
-          Text("Please read this.")
+          }
+          .glassEffect(.clear)
+          .alert("Important message", isPresented: $showingAlert) {
+            Button("OK", role: .cancel) { print("Alert OK") }
+            Button("Not OK", role: .destructive) { print("Alert is not OK") }
+          } message: {
+            Text("Please read this.")
+          }
+        } else {
+          Button {
+            showingAlert = true
+          } label: {
+            Label("Show Alert", systemImage: "pencil")
+              .padding()
+              .foregroundStyle(.white)
+            // .background(.orange.gradient)
+            // .clipShape(.rect(cornerRadius: 8))
+          }
+          .alert("Important message", isPresented: $showingAlert) {
+            Button("OK", role: .cancel) { print("Alert OK") }
+            Button("Not OK", role: .destructive) { print("Alert is not OK") }
+          } message: {
+            Text("Please read this.")
+          }
         }
       }
     }

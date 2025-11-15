@@ -12,10 +12,16 @@ struct FlagButton: View {
   let action: () -> Void
 
   var body: some View {
-    Button(action: action, label: { Image(country) })
-    .clipShape(.capsule)
-    .shadow(radius: 5)
-    .glassEffect(.clear)
+    if #available(iOS 26.0, *) {
+      Button(action: action, label: { Image(country) })
+        .clipShape(.capsule)
+        .shadow(radius: 5)
+        .glassEffect(.clear)
+    } else {
+      Button(action: action, label: { Image(country) })
+        .clipShape(.capsule)
+        .shadow(radius: 5)
+    }
   }
 }
 

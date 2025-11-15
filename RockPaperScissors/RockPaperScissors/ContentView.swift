@@ -85,28 +85,46 @@ struct ContentView: View {
           Button {
             buttonTapped(with: .rock)
           } label: {
-            Text(Move.rock.emoji)
-              .padding(24)
-              .font(.largeTitle)
-              .glassEffect(.clear)
+            if #available(iOS 26.0, *) {
+              Text(Move.rock.emoji)
+                .padding(24)
+                .font(.largeTitle)
+                .glassEffect(.clear)
+            } else {
+              Text(Move.rock.emoji)
+                .padding(24)
+                .font(.largeTitle)
+            }
           }
           Spacer()
           Button {
             buttonTapped(with: .paper)
           } label: {
-            Text(Move.paper.emoji)
-              .padding(24)
-              .font(.largeTitle)
-              .glassEffect(.clear)
+            if #available(iOS 26.0, *) {
+              Text(Move.paper.emoji)
+                .padding(24)
+                .font(.largeTitle)
+                .glassEffect(.clear)
+            } else {
+              Text(Move.paper.emoji)
+                .padding(24)
+                .font(.largeTitle)
+            }
           }
           Spacer()
           Button {
             buttonTapped(with: .scissors)
           } label: {
-            Text(Move.scissors.emoji)
-              .padding(24)
-              .font(.largeTitle)
-              .glassEffect(.clear)
+            if #available(iOS 26.0, *) {
+              Text(Move.scissors.emoji)
+                .padding(24)
+                .font(.largeTitle)
+                .glassEffect(.clear)
+            } else {
+              Text(Move.scissors.emoji)
+                .padding(24)
+                .font(.largeTitle)
+            }
           }
           Spacer()
           Spacer()
