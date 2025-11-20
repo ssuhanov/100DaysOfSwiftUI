@@ -16,6 +16,8 @@ struct ContentView: View {
   @State private var errorMessage = ""
   @State private var showingError = false
 
+  @State private var score = ""
+
   var body: some View {
     NavigationStack {
       List {
@@ -32,12 +34,24 @@ struct ContentView: View {
             }
           }
         }
+
+        Section {
+          Text(score)
+            .font(.headline)
+            .frame(maxWidth: .infinity, alignment: .center)
+          Text(usedWords.isEmpty ? "More info on the words..." : "^[\(usedWords.count) word](inflect: true)")
+            .font(.subheadline)
+            .frame(maxWidth: .infinity, alignment: .center)
+        }
       }
       .navigationTitle(rootWord)
       .onSubmit(addNewWord)
       .onAppear(perform: startGame)
       .alert(errorTitle, isPresented: $showingError) {} message: {
         Text(errorMessage)
+      }
+      .toolbar {
+        Button("Start again", action: startGame)
       }
     }
   }
@@ -74,6 +88,14 @@ struct ContentView: View {
     return misspelledRange.location == NSNotFound
   }
 
+  private func isShorterThanThreeLetters(word: String) -> Bool {
+    word.count < 3
+  }
+
+  private func equalsToStart(word: String) -> Bool {
+    word == rootWord
+  }
+
   private func addNewWord() {
     let answer = newWord.lowercased().trimmingCharacters(in: .whitespacesAndNewlines)
 
@@ -96,9 +118,22 @@ struct ContentView: View {
       return
     }
 
+    guard !isShorterThanThreeLetters(word: answer) else {
+      wordError(title: "Word is too short", message: "Try longer words")
+      return
+    }
+
+    guard !equalsToStart(word: answer) else {
+      wordError(title: "Word is too similar to the root word", message: "You can't use the same word as the initial one")
+      return
+    }
+
     withAnimation {
       usedWords.insert(answer, at: .zero)
     }
+    
+    let currentScore = usedWords.reduce(0) { $0 + $1.count }
+    score = "Your score is: \(currentScore)"
     newWord = ""
   }
 
@@ -109,6 +144,10 @@ struct ContentView: View {
   }
 
   private func startGame() {
+    usedWords = []
+    newWord = ""
+    score = "Score will appear here"
+
     guard let startWordsUrl = Bundle.main.url(forResource: "start", withExtension: "txt") else {
       fatalError("Could not load start.txt from bundle.")
     }
