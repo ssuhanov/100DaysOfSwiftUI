@@ -47,6 +47,9 @@ struct ContentView: View {
   @State private var score = 0
   @State private var tappedFlag = ""
 
+  @State private var buttonRotations = [0, 0, 0]
+  @State private var fadesOut = [false, false, false]
+
   private var endOfTheGame: Bool {
     score >= 8
   }
@@ -85,8 +88,22 @@ struct ContentView: View {
 
           ForEach(0..<3) { number in
             FlagButton(country: countries[number]) {
-              flagTapped((number))
+              withAnimation(.spring(duration: 1, bounce: 0.5)) {
+                buttonRotations[number] += 1
+              }
+
+              withAnimation {
+                for i in 0..<3 {
+                  if i == number { continue }
+                  fadesOut[i] = true
+                }
+              }
+
+              flagTapped(number)
             }
+            .rotation3DEffect(.degrees(Double(buttonRotations[number]*180)), axis: (x: 0, y: 1.0, z: 0))
+            .opacity(fadesOut[number] ? 0.25 : 1.0)
+            .scaleEffect(fadesOut[number] ? 0.8 : 1.0)
           }
         }
         .frame(maxWidth: .infinity)
@@ -135,8 +152,12 @@ struct ContentView: View {
     if endOfTheGame {
       score = 0
     }
-    countries.shuffle()
-    correctAnswer = Int.random(in: 0...2)
+
+    withAnimation {
+      fadesOut = [false, false, false]
+      countries.shuffle()
+      correctAnswer = Int.random(in: 0...2)
+    }
   }
 }
 
