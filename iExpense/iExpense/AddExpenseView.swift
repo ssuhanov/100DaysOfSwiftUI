@@ -11,6 +11,7 @@ struct AddExpenseView: View {
   @State private var name = ""
   @State private var type = "Personal"
   @State private var amount = 0.0
+  @State private var date: Date = .now.startOfDay
 
   @Environment(\.dismiss) var dismiss
 
@@ -35,6 +36,12 @@ struct AddExpenseView: View {
 
         TextField("Amount", value: $amount, format: .currency(code: currencyCode))
           .keyboardType(.decimalPad)
+
+        DatePicker(
+          "Please enter a date",
+          selection: $date,
+          displayedComponents: .date
+        )
       }
       .navigationTitle("Add new expense")
       .toolbar {
@@ -48,7 +55,12 @@ struct AddExpenseView: View {
           }
 
           expenses.items.append(
-            ExpenseItem(name: name, type: type, amount: amount)
+            ExpenseItem(
+              date: date.startOfDay,
+              name: name,
+              type: type,
+              amount: amount
+            )
           )
         }
       }

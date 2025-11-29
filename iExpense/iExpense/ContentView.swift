@@ -7,8 +7,15 @@
 
 import SwiftUI
 
+extension Date {
+  var startOfDay: Date {
+    Calendar.current.startOfDay(for: self)
+  }
+}
+
 struct ExpenseItem: Identifiable, Codable, Equatable {
   var id: UUID = .init()
+  var date: Date
   let name: String
   let type: String
   let amount: Double
@@ -48,9 +55,9 @@ struct ContentView: View {
   var body: some View {
     NavigationStack {
       List {
-        ForEach(Array(Set(expenses.items.map { "\($0.type)" })).sorted(), id: \.self ) { itemType in
-          Section("\(itemType)") {
-            ForEach(expenses.items.filter { $0.type == itemType }) { item in
+        ForEach(Array(Set(expenses.items.map { $0.date })).sorted(), id: \.self ) { itemDate in
+          Section("\(itemDate, format: .dateTime.year().month().day())") {
+            ForEach(expenses.items.filter { $0.date == itemDate }) { item in
               HStack {
                 VStack(alignment: .leading) {
                   Text(item.name)
@@ -69,7 +76,7 @@ struct ContentView: View {
               }
             }
             .onDelete { indexSet in
-              removeItems(at: indexSet, with: itemType)
+              removeItems(at: indexSet, with: itemDate)
             }
           }
         }
@@ -89,9 +96,9 @@ struct ContentView: View {
     }
   }
 
-  private func removeItems(at offsets: IndexSet, with type: String) {
-    let itemsWithType = expenses.items.filter { $0.type == type }
-    let itemsToDelete = offsets.map { itemsWithType[$0] }
+  private func removeItems(at offsets: IndexSet, with date: Date) {
+    let itemsWithDate = expenses.items.filter { $0.date == date }
+    let itemsToDelete = offsets.map { itemsWithDate[$0] }
     expenses.items = expenses.items.filter { !itemsToDelete.contains($0) }
   }
 }
